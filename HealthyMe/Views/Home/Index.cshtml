@@ -1,0 +1,108 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+}
+
+<style>
+    body {
+        background-image: url('https://images.unsplash.com/photo-1560773526-435221de2527?ixlib=rb-1.2.1&w=1000&q=80');
+        background-color: antiquewhite;
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+        background-size: 100% 100%;
+    }
+</style>
+
+
+
+<br />
+<div class="jumbotron" style=" background-image: url('https://i.pinimg.com/736x/8c/ad/b0/8cadb067fefcd0956ff2e5738a8a0e92.jpg') ">
+    <section class="text-banner">
+        <h1>Stay healthy Stay fit!</h1>
+        <p class="lead">You can make your customised diet plan, book appointments and view the exercises.</p>
+        <p><a href="~/Home/About" class="btn btn-primary btn-lg" style="background-color: dimgrey ">About Us &raquo;</a></p>
+    </section>
+</div>
+
+<div class="row">
+    <div class="col-md-6" style="background-color: lightpink ">
+
+        <h1>Book Your Appointment Now!!</h1>
+        <p class="lead"> Train yourself with one of the best trainers.</p>
+        <p><a href="~/Appointments" class="btn btn-primary btn-lg" style="background-color: dimgrey">Book Now &raquo;</a></p>
+
+    </div>
+
+
+    <div class="col-md-6" style="background-color: cadetblue">
+
+        <h1>Check your Diet Plan</h1>
+        <p class="lead">The main ingredient in staying health is to eat right </p>
+        <p><a href="~/DietPlans" class="btn btn-primary btn-lg" style="background-color: dimgrey">View Diet Plan &raquo;</a></p>
+
+    </div>
+
+
+</div>
+<br />
+
+// To get the chart
+
+<div id="chart_div" style="width:500px;height:400px">
+</div>
+
+<script>
+    var chartData; // globar variable for hold chart data
+    google.load("visualization", "1", { packages: ["corechart"] });
+
+    // Here We will fill chartData
+
+    $(document).ready(function () {
+
+        $.ajax({
+            url: "Home/GetChartData",
+            data: "{}",
+            dataType: "json",
+            type: "POST",
+            contentType: "application/json; chartset=utf-8",
+            success: function (data) {
+                chartData = data.d;
+            },
+            error: function () {
+                alert("Error loading data! Please try again.");
+            }
+        }).done(function () {
+            // after complete loading data
+            google.setOnLoadCallback(drawChart);
+            drawChart();
+        });
+    });
+
+
+    function drawChart() {
+        var data = google.visualization.arrayToDataTable(chartData);
+
+        var options = {
+            title: "Ratings for Appointment",
+            pointSize: 5
+        };
+
+        var pieChart = new google.visualization.PieChart(document.getElementById('chart_div'));
+        pieChart.draw(data, options);
+
+    }
+
+
+</script>
+
+<script src="Scripts/jquery-1.7.1.min.js"></script>
+<script type="text/javascript" src="https://www.google.com/jsapi"></script>
+
+@*Reference: http://www.dotnetawesome.com/2014/05/how-to-create-google-chart-pie-with-database-data-aspnet.html?m=1*@
+
+<br />
+
+
+
+
+
+

@@ -1,0 +1,76 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="HealthyMe_Models.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="Appointments">
+    <Key>
+      <PropertyRef Name="AppointmentId" />
+    </Key>
+    <Property Name="AppointmentId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="ClientName" Type="nvarchar" MaxLength="256" Nullable="false" />
+    <Property Name="TrainerName" Type="nvarchar" MaxLength="256" Nullable="false" />
+    <Property Name="Date" Type="date" Nullable="false" />
+    <Property Name="AppointmentAddress" Type="nvarchar(max)" Nullable="false" />
+  </EntityType>
+  <EntityType Name="DietPlan">
+    <Key>
+      <PropertyRef Name="DietId" />
+    </Key>
+    <Property Name="DietId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="DietName" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Accuracy" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Level" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="DietDescription" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="UserName" Type="nvarchar" MaxLength="256" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Exercises">
+    <Key>
+      <PropertyRef Name="ExerciseId" />
+    </Key>
+    <Property Name="ExerciseId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="ExerciseName" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="ExerciseDescription" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Tips" Type="nvarchar(max)" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Profiles">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Age" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Gender" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Address" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="UserId" Type="nvarchar" MaxLength="128" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Ratings">
+    <Key>
+      <PropertyRef Name="RatingId" />
+    </Key>
+    <Property Name="RatingId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Rating" Type="int" Nullable="false" />
+    <Property Name="AppointmentId" Type="int" Nullable="false" />
+    <Property Name="Comments" Type="nvarchar(max)" Nullable="false" />
+  </EntityType>
+  <Association Name="FK__Ratings__Appoint__4BAC3F29">
+    <End Role="Appointments" Type="Self.Appointments" Multiplicity="1" />
+    <End Role="Ratings" Type="Self.Ratings" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Appointments">
+        <PropertyRef Name="AppointmentId" />
+      </Principal>
+      <Dependent Role="Ratings">
+        <PropertyRef Name="AppointmentId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="HealthyMe_ModelsStoreContainer">
+    <EntitySet Name="Appointments" EntityType="Self.Appointments" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="DietPlan" EntityType="Self.DietPlan" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Exercises" EntityType="Self.Exercises" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Profiles" EntityType="Self.Profiles" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Ratings" EntityType="Self.Ratings" Schema="dbo" store:Type="Tables" />
+    <AssociationSet Name="FK__Ratings__Appoint__4BAC3F29" Association="Self.FK__Ratings__Appoint__4BAC3F29">
+      <End Role="Appointments" EntitySet="Appointments" />
+      <End Role="Ratings" EntitySet="Ratings" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

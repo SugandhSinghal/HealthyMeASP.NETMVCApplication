@@ -1,0 +1,114 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - HealthyMe</title>
+    @*This is to get Styleaz
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+
+
+    @* This is for the mapbox map. *@
+    <script src='https://api.mapbox.com/mapbox-gl-js/v1.12.0/mapbox-gl.js'></script>
+    <link href='https://api.mapbox.com/mapbox-gl-js/v1.12.0/mapbox-gl.css' rel='stylesheet' />
+
+
+
+    @*<script src="~/Scripts/tinymce.min.js"></script>*@
+    <link href="~/Content/c3.css" rel="stylesheet" />
+    <link href="~/Content/Site.css" rel="stylesheet" />
+    <link href="~/Content/bootstrap.css" rel="stylesheet" />
+    <script src="~/Scripts/c3.min.js"></script>
+    <script src="~/Scripts/d3.min.js"></script>
+    <script src="~/Scripts/jquery-1.10.2.min.js"></script>
+
+    @* This is for the rich text. *@
+    <script src="https://cdn.tiny.cloud/1/no-api-key/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
+
+    @*For Chart*@
+    <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+
+    <script src="//cdn.quilljs.com/1.3.6/quill.min.js"></script>
+    <link href="//cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+
+    @*This is used for the Geocoding Mapbox API*@
+    <script src='https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v2.2.0/mapbox-glgeocoder.min.js'></script>
+
+    <link rel='stylesheet' href='https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-glgeocoder/v2.2.0/mapbox-gl-geocoder.css' type='text/css' />
+
+
+</head>
+<body>
+    <div class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                @Html.ActionLink("HealthyMe", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+            </div>
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                    <li>@Html.ActionLink("Home", "Index", "Home")</li>
+                    <li>@Html.ActionLink("About", "About", "Home")</li>
+
+                    @*This Authenticate the pages for various users*@
+
+                    @if (User.Identity.IsAuthenticated)
+                    {
+                        <li>@Html.ActionLink("Appointments", "Index", "Appointments")</li>
+                        <li>@Html.ActionLink("Ratings", "Index", "Ratings")</li>
+                        <li>@Html.ActionLink("DietPlan", "Index", "DietPlans")</li>
+                        <li>@Html.ActionLink("Exercise", "Index", "Exercis")</li>
+
+                        if (User.IsInRole("Client"))
+                        {
+                            <li>@Html.ActionLink("Calendar", "Calendar", "Home")</li>
+
+                        }
+                        if (User.IsInRole("Trainer"))
+                        {
+                            <li> @Html.ActionLink("Send Email", "Send_Email", "Home") </li>
+                            <li> @Html.ActionLink("Upload Poster", "Index", "FileUploads") </li>
+                        }
+
+
+                    }
+
+
+                    }
+
+                </ul>
+                @Html.Partial("_LoginPartial")
+            </div>
+        </div>
+    </div>
+    <div class="container body-content">
+        @RenderBody()
+        <hr />
+        <footer>
+            <p>&copy; @DateTime.Now.Year - My HealthyMe Application</p>
+        </footer>
+    </div>
+    @*This is to get Map*@
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @RenderSection("scripts", required: false)
+    <script>
+        mapboxgl.accessToken = 'pk.eyJ1Ijoic3VnYW5kaHNpbmdoYWwiLCJhIjoiY2tnaGN6MjR4MDV1djJ5bnNoNnN0ZnY3ciJ9.-0Mh6Ex6l-IC4zmzeGYSVA';
+        var map = new mapboxgl.Map({
+            container: 'map',
+            style: 'mapbox://styles/mapbox/streets-v11',
+            center: [145.06, -37.88],
+            zoom: 8
+        });
+
+        var marker = new mapboxgl.Marker()
+            .setLngLat([145.06, -37.88])
+            .addTo(map);
+    </script>
+</body>
+</html >
